@@ -1,86 +1,102 @@
-<!DOCTYPE html>   
-<html lang="en">   
-<head>   
-<meta charset="UTF-8">   
-<title>Advanced Internet Speed Test</title>   
-<style>     
-body {   
-font-family: Arial, sans-serif;        
-background: #0f172a;         color: 
-white;         display: flex;         
-content: center;         
-alignitems: center;         
-height: 100vh;
-column;         gap:  
-20px;   
-}   
-         flex-direction: 
-.card{    
-background: #1e293b;         
-padding: 30px;         border
-radius: 20px;         width: 
-350px;         textalign: center;   
-box-shadow: 0 0 25px rgba(255,255,255,0.1);   
-}   
-#speedValue {       
-size: 55px;      
-font
-font-weight: 
-bold;
-20px;   
-                 margin-top: 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Internet Speed Test</title>
 
-}   
-button {          
-top: 20px;         
-margin
-padding: 
-12px 25px;  font-size: 
-18px;  border: none;    
-border-radius: 12px;         
-cursor: pointer;         
-background-color: 
-#3b82f6;        color: white;          
-transition: 0.25s;   
-}   
-button:hover {          
-color: #60a5fa;   
-}   
-</style>   
-</head>   
-<body>   
-background
-<div class="card">   
-<h1>Internet Speed Test</h1>   
-<div id="speedValue">-- Mbps</div>   
-<button onclick="startTest()">Start Test</button>   
-</div>   
-<script> function 
-startTest() {
-     const 
-testImage = 
-"https://upload.wikimedia.org/wikipedia /commons/3/3f/Fronalpstock_big.jpg";     
-const 
-fileSizeInBytes = 
-5450000; // 5.45 MB 
-image   
-let startTime, endTime;   
-document.getElementById("speedValue").innerText = "Testing...";   
-startTime = new Date().getTime();   
-fetch(testImage)   
-.then(response => response.blob())   
-.then(() => {  
-endTime = new Date().getTime();   
-let duration = (endTime - startTime) / 1000;         
-let bitsLoaded = fileSizeInBytes * 8;   
-let speedMbps = (bitsLoaded / duration / (1024 * 1024)).toFixed(2);   
-document.getElementById("speedValue").innerText = speedMbps + " Mbps";   
-})   
-.catch(err => {  
-document.getElementById("speedValue").innerText = "Error!";         
-console.log(err);   
-});   
-}   
-</script>   
-</body>   
-</html>  
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.card {
+    background: #1e293b;
+    padding: 30px;
+    border-radius: 20px;
+    width: 360px;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+#speedValue {
+    font-size: 50px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+button {
+    padding: 12px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    background-color: #3b82f6;
+    color: white;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #2563eb;
+}
+
+button:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h1>Internet Speed Test</h1>
+    <div id="speedValue">-- Mbps</div>
+    <button id="startBtn" onclick="startTest()">Start Test</button>
+</div>
+
+<script>
+function startTest() {
+    const testImage =
+        "https://upload.wikimedia.org/wikipedia/commons/3/3f/Fronalpstock_big.jpg";
+    const fileSizeInBytes = 5450000; // 5.45 MB
+
+    const speedDisplay = document.getElementById("speedValue");
+    const button = document.getElementById("startBtn");
+
+    speedDisplay.innerText = "Testing...";
+    button.disabled = true;
+
+    const startTime = new Date().getTime();
+
+    fetch(testImage, { cache: "no-store" })
+        .then(response => response.blob())
+        .then(() => {
+            const endTime = new Date().getTime();
+            const duration = (endTime - startTime) / 1000;
+
+            const bitsLoaded = fileSizeInBytes * 8;
+            const speedMbps = (bitsLoaded / duration / (1024 * 1024)).toFixed(2);
+
+            speedDisplay.innerText = speedMbps + " Mbps";
+            button.disabled = false;
+        })
+        .catch(error => {
+            speedDisplay.innerText = "Error!";
+            console.error(error);
+            button.disabled = false;
+        });
+}
+</script>
+
+</body>
+</html>
